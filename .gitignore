@@ -1,0 +1,33 @@
+# Node.js
+node_modules
+dist
+build
+
+# Prisma
+.prisma
+*.db
+
+# Logs
+logs
+*.log
+
+# Vite
+.vite
+
+# Docker
+*.local
+Dockerfile*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode
+
+# TypeScript
+*.tsbuildinfo
+
+# Output folders
+frontend/dist
+backend/dist
