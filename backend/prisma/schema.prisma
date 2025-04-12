@@ -15,7 +15,7 @@ model Client {
   cpf         String
   createdAt   DateTime      @default(now())
 
-  reservations Reservation[] // 1:N com Reservation
+  reservations Reservation[]
 }
 
 model Rental {
@@ -28,7 +28,7 @@ model Rental {
   maxTime     Int
   createdAt   DateTime      @default(now())
 
-  reservations Reservation[] // 1:N com Reservation
+  reservations Reservation[]
 }
 
 model Reservation {
