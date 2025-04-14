@@ -15,8 +15,7 @@ logs
 .vite
 
 # Docker
-*.local
-Dockerfile*
+Dockerfile.local
 
 # System files
 .DS_Store

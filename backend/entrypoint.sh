@@ -1,15 +1,13 @@
 #!/bin/sh
 
-echo "⏳ Aguardando o MySQL iniciar..."
+echo "⏳ Aguardando o MySQL ficar pronto..."
 
-# Espera até o MySQL estar disponível
-until nc -z mysql 3306; do
-  echo "⏱️ MySQL ainda não está disponível. Tentando novamente..."
+# Tenta até o migrate funcionar
+until npx prisma migrate deploy > /dev/null 2>&1; do
+  echo "⏱️ Ainda não está pronto... aguardando MySQL subir"
   sleep 2
 done
 
-echo "✅ MySQL está pronto. Executando migrations..."
-npx prisma migrate deploy
-
+echo "✅ MySQL está pronto. Migração aplicada com sucesso!"
 echo "🚀 Iniciando o backend..."
 npm run dev
