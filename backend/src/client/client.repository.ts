@@ -1,5 +1,5 @@
 import prisma from "../prisma/prismaClient";
-import { ClientCreateDTO, ClientEntity, UpdateClientDTO } from "./client.types";
+import { ClientCreateDTO, ClientEntity, ClientUpdateDTO } from "./client.types";
 
 export const getClientAllRepository = async (): Promise<ClientEntity[]> => {
   return prisma.client.findMany();
@@ -15,7 +15,7 @@ export const getClientByIdRepository = async (
 
 export const updateClientRepository = async (
   id: number,
-  data: UpdateClientDTO
+  data: ClientUpdateDTO
 ) => {
   return prisma.client.update({
     where: { id },

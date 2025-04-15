@@ -3,7 +3,7 @@ import * as repository from "./client.repository";
 import {
   ClientCreateDTO,
   ClientResponseDTO,
-  UpdateClientDTO,
+  ClientUpdateDTO,
 } from "./client.types";
 
 export const getClientAllService = async (): Promise<ClientResponseDTO[]> => {
@@ -21,7 +21,7 @@ export const getClientByIdService = async (
 
 export const updateClientService = async (
   id: number,
-  data: UpdateClientDTO
+  data: ClientUpdateDTO
 ): Promise<ClientResponseDTO> => {
   const updated = await repository.updateClientRepository(id, data);
   return toClientResponseDTO(updated);

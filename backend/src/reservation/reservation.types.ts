@@ -1,12 +1,5 @@
-import { z } from "zod";
-import {
-  createReservationSchema,
-  updateReservationSchema,
-} from "./reservation.validation";
-
-export type ReservationCreateDTO = z.infer<typeof createReservationSchema>;
-
-export type ReservationUpdateDTO = z.infer<typeof updateReservationSchema>;
+import { ClientEntity, ClientResponseDTO } from "../client/client.types";
+import { RentalEntity, RentalResponseDTO } from "../rental/rental.types";
 
 export interface ReservationEntity {
   id: number;
@@ -17,24 +10,8 @@ export interface ReservationEntity {
   finalPrice: number;
   status: string;
   createdAt: Date;
-  client: {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    cpf: string;
-    createdAt: Date;
-  };
-  rental: {
-    id: number;
-    name: string;
-    type: string;
-    description: string | null;
-    pricePerHour: number;
-    minTime: number;
-    maxTime: number;
-    createdAt: Date;
-  };
+  client: ClientEntity;
+  rental: RentalEntity;
 }
 
 export interface ReservationResponseDTO {
@@ -46,31 +23,33 @@ export interface ReservationResponseDTO {
   finalPrice: number;
   status: string;
   createdAt: string;
-  client: {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    cpf: string;
-    createdAt: string;
-  };
-  rental: {
-    id: number;
-    name: string;
-    type: string;
-    description: string | null;
-    pricePerHour: number;
-    minTime: number;
-    maxTime: number;
-    createdAt: string;
-  };
+  client: ClientResponseDTO;
+  rental: RentalResponseDTO;
 }
 
-export type ReservationPrismaInput = {
+export interface ReservationCreateDTO {
+  clientId: number;
+  rentalId: number;
+  startDate: string;
+  endDate: string;
+  finalPrice: number;
+  status: string;
+}
+
+export interface ReservationUpdateDTO {
+  clientId?: number;
+  rentalId?: number;
+  startDate?: string;
+  endDate?: string;
+  finalPrice?: number;
+  status?: string;
+}
+
+export interface ReservationPrismaInput {
   clientId: number;
   rentalId: number;
   startDate: Date;
   endDate: Date;
   finalPrice: number;
   status: string;
-};
+}

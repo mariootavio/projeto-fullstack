@@ -1,29 +1,31 @@
-import { z } from "zod";
-import { updateClientSchema } from "./client.validation";
-
-export type ClientEntity = {
+export interface ClientEntity {
   id: number;
   name: string;
   email: string;
   phone: string;
   cpf: string;
   createdAt: Date;
-};
+}
 
-export type ClientResponseDTO = {
+export interface ClientResponseDTO {
   id: number;
   name: string;
   email: string;
   phone: string;
   cpf: string;
   createdAt: string;
-};
+}
 
-export type ClientCreateDTO = {
+export interface ClientCreateDTO {
   name: string;
   email: string;
   phone: string;
   cpf: string;
-};
+}
 
-export type UpdateClientDTO = z.infer<typeof updateClientSchema>;
+export interface ClientUpdateDTO {
+  name?: string;
+  email?: string;
+  phone?: string;
+  cpf?: string;
+}

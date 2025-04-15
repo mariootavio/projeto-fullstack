@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const requiredNumber = (field: string) =>
+const numberField = (field: string) =>
   z.preprocess(
     (val) => (val === null || val === undefined ? undefined : val),
     z.number({
@@ -9,30 +9,24 @@ const requiredNumber = (field: string) =>
     })
   );
 
+const dateField = (field: string) =>
+  z
+    .string({
+      required_error: `${field} é obrigatório`,
+      invalid_type_error: `${field} deve ser uma string`,
+    })
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: `Formato de data inválido em ${field.toLowerCase()}`,
+    });
+
 export const createReservationSchema = z.object({
-  clientId: requiredNumber("Cliente"),
-  rentalId: requiredNumber("Locação"),
-
-  startDate: z
-    .string({
-      required_error: "Data de início é obrigatória",
-      invalid_type_error: "Data de início deve ser uma string",
-    })
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: "Formato de data inválido",
-    }),
-
-  endDate: z
-    .string({
-      required_error: "Data de fim é obrigatória",
-      invalid_type_error: "Data de fim deve ser uma string",
-    })
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: "Formato de data inválido",
-    }),
-
-  finalPrice: requiredNumber("Preço final"),
-
+  clientId: numberField("Cliente"),
+  rentalId: numberField("Locação"),
+  startDate: dateField("Data de início"),
+  endDate: dateField("Data de fim"),
+  finalPrice: numberField("Preço final").refine((val) => val > 0, {
+    message: "Preço final deve ser maior que 0",
+  }),
   status: z
     .string({
       required_error: "Status é obrigatório",
@@ -42,21 +36,15 @@ export const createReservationSchema = z.object({
 });
 
 export const updateReservationSchema = z.object({
-  clientId: requiredNumber("Cliente"),
-  rentalId: requiredNumber("Locação"),
-  startDate: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: "Formato de data inválido",
+  clientId: numberField("Cliente").optional(),
+  rentalId: numberField("Locação").optional(),
+  startDate: dateField("Data de início").optional(),
+  endDate: dateField("Data de fim").optional(),
+  finalPrice: numberField("Preço final")
+    .refine((val) => val > 0, {
+      message: "Preço final deve ser maior que 0",
     })
     .optional(),
-  endDate: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: "Formato de data inválido",
-    })
-    .optional(),
-  finalPrice: requiredNumber("Preço final"),
   status: z
     .string({
       invalid_type_error: "Status deve ser uma string",

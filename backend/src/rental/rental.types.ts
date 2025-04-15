@@ -1,7 +1,4 @@
-import { z } from "zod";
-import { updateRentalSchema } from "./rental.validation";
-
-export type RentalEntity = {
+export interface RentalEntity {
   id: number;
   name: string;
   type: string;
@@ -10,9 +7,9 @@ export type RentalEntity = {
   minTime: number;
   maxTime: number;
   createdAt: Date;
-};
+}
 
-export type RentalResponseDTO = {
+export interface RentalResponseDTO {
   id: number;
   name: string;
   type: string;
@@ -21,15 +18,22 @@ export type RentalResponseDTO = {
   minTime: number;
   maxTime: number;
   createdAt: string;
-};
+}
 
-export type RentalCreateDTO = {
+export interface RentalCreateDTO {
   name: string;
   type: string;
-  description?: string;
+  description?: string | null;
   pricePerHour: number;
   minTime: number;
   maxTime: number;
-};
+}
 
-export type RentalUpdateDTO = z.infer<typeof updateRentalSchema>;
+export interface RentalUpdateDTO {
+  name?: string;
+  type?: string;
+  description?: string | null;
+  pricePerHour?: number;
+  minTime?: number;
+  maxTime?: number;
+}

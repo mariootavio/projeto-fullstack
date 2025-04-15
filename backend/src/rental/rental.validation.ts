@@ -1,36 +1,43 @@
 import { z } from "zod";
 
+const numberField = (label: string) =>
+  z.preprocess(
+    (val) => (val === null || val === undefined ? undefined : val),
+    z
+      .number({
+        required_error: `${label} é obrigatório`,
+        invalid_type_error: `${label} deve ser um número`,
+      })
+      .refine((val) => val > 0, {
+        message: `${label} deve ser maior que 0`,
+      })
+  );
+
 export const createRentalSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
-  type: z.string().min(1, "Tipo é obrigatório"),
-  description: z.string().optional(),
-
-  pricePerHour: z.coerce
-    .number({
-      required_error: "Preço por hora é obrigatório",
-      invalid_type_error: "Preço por hora deve ser um número",
+  name: z
+    .string({
+      required_error: "Nome é obrigatório",
+      invalid_type_error: "Nome deve ser uma string",
     })
-    .refine((val) => !isNaN(val) && val > 0, {
-      message: "Preço por hora deve ser maior que 0",
-    }),
+    .min(1, "Nome é obrigatório"),
 
-  minTime: z.coerce
-    .number({
-      required_error: "Tempo mínimo é obrigatório",
-      invalid_type_error: "Deve ser um número",
+  type: z
+    .string({
+      required_error: "Tipo é obrigatório",
+      invalid_type_error: "Tipo deve ser uma string",
     })
-    .refine((val) => !isNaN(val) && val > 0, {
-      message: "Tempo mínimo deve ser maior que 0",
-    }),
+    .min(1, "Tipo é obrigatório"),
 
-  maxTime: z.coerce
-    .number({
-      required_error: "Tempo máximo é obrigatório",
-      invalid_type_error: "Deve ser um número",
+  description: z
+    .string({
+      invalid_type_error: "Descrição deve ser uma string",
     })
-    .refine((val) => !isNaN(val) && val > 0, {
-      message: "Tempo máximo deve ser maior que 0",
-    }),
+    .nullable()
+    .optional(),
+
+  pricePerHour: numberField("Preço por hora"),
+  minTime: numberField("Tempo mínimo"),
+  maxTime: numberField("Tempo máximo"),
 });
 
 export const updateRentalSchema = z.object({
@@ -48,31 +55,36 @@ export const updateRentalSchema = z.object({
     .min(1, "Tipo é obrigatório")
     .optional(),
 
-  description: z.string().optional(),
+  description: z
+    .string({
+      invalid_type_error: "Descrição deve ser uma string",
+    })
+    .nullable()
+    .optional(),
 
-  pricePerHour: z.coerce
+  pricePerHour: z
     .number({
       invalid_type_error: "Preço por hora deve ser um número",
     })
-    .refine((val) => !isNaN(val) && val > 0, {
+    .refine((val) => val > 0, {
       message: "Preço por hora deve ser maior que 0",
     })
     .optional(),
 
-  minTime: z.coerce
+  minTime: z
     .number({
       invalid_type_error: "Tempo mínimo deve ser um número",
     })
-    .refine((val) => !isNaN(val) && val > 0, {
+    .refine((val) => val > 0, {
       message: "Tempo mínimo deve ser maior que 0",
     })
     .optional(),
 
-  maxTime: z.coerce
+  maxTime: z
     .number({
       invalid_type_error: "Tempo máximo deve ser um número",
     })
-    .refine((val) => !isNaN(val) && val > 0, {
+    .refine((val) => val > 0, {
       message: "Tempo máximo deve ser maior que 0",
     })
     .optional(),
