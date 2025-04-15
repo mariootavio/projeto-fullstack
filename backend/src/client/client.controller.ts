@@ -1,97 +1,109 @@
-import {Request,Response} from 'express';
+import { Request, Response } from "express";
 
-import * as service from './client.service';
-import { createClientSchema, deleteClientSchema } from '../validations/clientValidation'
-import { handlePrismaError } from '../validations/prismaValidation'
+import * as service from "./client.service";
+import { createClientSchema, updateClientSchema } from "./client.validation";
+import { handlePrismaError } from "../validations/prisma.validation";
+import { ClientResponseDTO } from "./client.types";
 
-
-export const getClientAllController = async (_:Request, res:Response) => {
-    const clients = await service.getClientAllService();
+export const getClientAllController = async (_: Request, res: Response) => {
+  try {
+    const clients: ClientResponseDTO[] = await service.getClientAllService();
     res.json(clients);
-};
-
-export const getClientByIdController = async (req:Request, res:Response) => {
-
-    try {
-        const client = await service.getClientByIdService(Number(req.params.id))
-
-        if(!client) {
-            res.status(404).json({ error: "Cliente não encontrado"});
-            return
-        }
-
-        res.json(client)
-    } catch (ex) {
-        console.error("getClientByIdController error: ", ex)  
-        res.status(500).json({ error: "Erro interno no servidor"});
-    } 
-  
-};
-
-export const updateClientController = async (req:Request, res:Response) => {
-    const validation = createClientSchema.safeParse(req.body)
-  
-    if (!validation.success) {
-        res.status(400).json({
-            error: 'Erro de validação',
-            fields: validation.error.flatten().fieldErrors,
-        })
-        return
-    }
-
-    try {
-        const client = await service.updateClientByIdService(Number(req.params.id), req.body)
-        res.json(client)
-    } catch (ex) {
-        console.error("updateClientController error: ", ex)  
-        const { status, error, fields } = handlePrismaError(ex);
-        res.status(status).json({ error, fields});
-    }
-  
-};
-
-export const deleteClientController = async (req:Request, res:Response) => {
-    const validation = deleteClientSchema.safeParse({ id: req.params.id })
-  
-    if (!validation.success) {
-        res.status(400).json({
-            error: 'Erro de validação',
-            fields: validation.error.flatten().fieldErrors,
-        })
-        return
-    }
-
-    try {
-        await service.deleteClientByIdService(Number(req.params.id))
-        res.status(204).send()
-    } catch (ex) {
-        console.error("deleteClientController error: ", ex)  
-        res.status(404).json({ error: "Cliente não encontrado"});
-    }
-  
-};
-
-export const createClientController = async (req: Request, res: Response): Promise<void> => {
-    const validation = createClientSchema.safeParse(req.body)
-  
-    if (!validation.success) {
-        res.status(400).json({
-            error: 'Erro de validação',
-            fields: validation.error.flatten().fieldErrors,
-        })
-        return
-    }
-  
-    try {
-      const { name, email, phone, cpf } = validation.data
-      const newClient = await service.createClientService({ name, email, phone, cpf })
-  
-      res.status(201).json(newClient)
-  
-    } catch (ex) {
-      console.error("createClientController error: ", ex)  
-      const { status, error, fields } = handlePrismaError(ex);
-      res.status(status).json({ error, fields});
-    }
+  } catch (error) {
+    console.error("Erro getClientAllController:", error);
+    const { status, error: message, fields } = handlePrismaError(error);
+    res.status(status).json({ error: message, fields });
   }
+};
 
+export const getClientByIdController = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json({ error: "ID inválido" });
+      return;
+    }
+
+    const client: ClientResponseDTO | null = await service.getClientByIdService(
+      id
+    );
+
+    if (!client) {
+      res.status(404).json({ error: "Cliente não encontrado" });
+      return;
+    }
+
+    res.json(client);
+  } catch (error) {
+    console.error("Erro getClientByIdController:", error);
+    const { status, error: message, fields } = handlePrismaError(error);
+    res.status(status).json({ error: message, fields });
+  }
+};
+
+export const updateClientController = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json({ error: "ID inválido" });
+      return;
+    }
+
+    const validation = updateClientSchema.safeParse(req.body);
+
+    if (!validation.success) {
+      res.status(400).json({
+        error: "Erro de validação",
+        fields: validation.error.flatten().fieldErrors,
+      });
+      return;
+    }
+
+    const updated = await service.updateClientService(id, validation.data);
+    res.json(updated);
+  } catch (error) {
+    console.error("Erro updateClientController:", error);
+    const { status, error: message, fields } = handlePrismaError(error);
+    res.status(status).json({ error: message, fields });
+  }
+};
+
+export const deleteClientController = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json({ error: "ID inválido" });
+      return;
+    }
+
+    await service.deleteClientByIdService(id);
+    res.status(204).send();
+  } catch (error) {
+    console.error("Erro deleteClientController:", error);
+    const { status, error: message, fields } = handlePrismaError(error);
+    res.status(status).json({ error: message, fields });
+  }
+};
+
+export const createClientController = async (req: Request, res: Response) => {
+  try {
+    const validation = createClientSchema.safeParse(req.body);
+
+    if (!validation.success) {
+      res.status(400).json({
+        error: "Erro de validação",
+        fields: validation.error.flatten().fieldErrors,
+      });
+      return;
+    }
+
+    const newClient: ClientResponseDTO = await service.createClientService(
+      validation.data
+    );
+    res.status(201).json(newClient);
+  } catch (error) {
+    console.error("Erro createClientController:", error);
+    const { status, error: message, fields } = handlePrismaError(error);
+    res.status(status).json({ error: message, fields });
+  }
+};

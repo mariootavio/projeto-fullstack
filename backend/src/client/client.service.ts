@@ -1,46 +1,39 @@
-import { formatDateToBrazil } from '../util/formatDate';
-import * as repository from  './client.repository';
+import { toClientResponseDTO } from "./client.mapper";
+import * as repository from "./client.repository";
+import {
+  ClientCreateDTO,
+  ClientResponseDTO,
+  UpdateClientDTO,
+} from "./client.types";
 
-export const getClientAllService = async () => {
-    const clients = await repository.getClientAllRepository();
-    const response = clients.map((client: any) => ({
-        ...client,
-        createdAt: formatDateToBrazil(client.createdAt),
-      }));
-    return response  
+export const getClientAllService = async (): Promise<ClientResponseDTO[]> => {
+  const clients = await repository.getClientAllRepository();
+  return clients.map(toClientResponseDTO);
 };
 
-export const getClientByIdService = async (id: number) => {
-    let client = await repository.findClientByIdRepository(id)
-    if (!client) return client
-    return {
-        ...client,
-        createdAt: formatDateToBrazil(client.createdAt),
-    };
+export const getClientByIdService = async (
+  id: number
+): Promise<ClientResponseDTO | null> => {
+  const client = await repository.getClientByIdRepository(id);
+  if (!client) return null;
+  return toClientResponseDTO(client);
 };
 
-export const updateClientByIdService = async (id: number, data: any) => {
-    const client = await repository.updateClientByIdRepository(id, data)
-    return {
-        ...client,
-        createdAt: formatDateToBrazil(client.createdAt),
-    };
-};
-  
-export const deleteClientByIdService = (id: number) => {
-    return repository.deleteClientByIdRepository(id)
+export const updateClientService = async (
+  id: number,
+  data: UpdateClientDTO
+): Promise<ClientResponseDTO> => {
+  const updated = await repository.updateClientRepository(id, data);
+  return toClientResponseDTO(updated);
 };
 
-export const createClientService = async (data:{
-    name: string;
-    email: string;
-    phone: string;
-    cpf: string;
-}) => {
-    const newClient = await repository.createClientRepository( data );
-    return {
-        ...newClient,
-        createdAt: formatDateToBrazil(newClient.createdAt)
-    }
+export const deleteClientByIdService = async (id: number): Promise<void> => {
+  await repository.deleteClientByIdRepository(id);
 };
 
+export const createClientService = async (
+  data: ClientCreateDTO
+): Promise<ClientResponseDTO> => {
+  const client = await repository.createClientRepository(data);
+  return toClientResponseDTO(client);
+};

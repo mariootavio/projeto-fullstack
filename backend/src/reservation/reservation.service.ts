@@ -1,64 +1,45 @@
-import { formatDateToBrazil } from '../util/formatDate';
-import * as repository from './reservation.repository'
+import { formatDateToBrazil } from "../util/formatDate";
+import {
+  toReservationPrismaInput,
+  toReservationResponseDTO,
+} from "./reservation.mapper";
+import * as repository from "./reservation.repository";
+import {
+  ReservationCreateDTO,
+  ReservationResponseDTO,
+  ReservationUpdateDTO,
+} from "./reservation.types";
 
-export const createReservationService = async (data: any) => {
-  const reservation = await repository.createReservation(data)
-  return {
-      ...reservation,
-      startDate: formatDateToBrazil(reservation.startDate),
-      endDate: formatDateToBrazil(reservation.endDate),
-      createdAt: formatDateToBrazil(reservation.createdAt),
-  };
+export const createReservationService = async (
+  data: ReservationCreateDTO
+): Promise<ReservationResponseDTO> => {
+  const prismaInput = toReservationPrismaInput(data);
+  const reservation = await repository.createReservationRepository(prismaInput);
+  return toReservationResponseDTO(reservation);
 };
 
-export const getAllReservationsService = async () => {
-  const reservations = await repository.getAllReservations()
-
-  const formatted = reservations.map(reservation => ({
-    ...reservation,
-    startDate: formatDateToBrazil(reservation.startDate),
-    endDate: formatDateToBrazil(reservation.endDate),
-    createdAt: formatDateToBrazil(reservation.createdAt),
-    client: {
-      ...reservation.client,
-      createdAt: formatDateToBrazil(reservation.client.createdAt),
-    },
-    rental: {
-      ...reservation.rental,
-      createdAt: formatDateToBrazil(reservation.rental.createdAt),
-    },
-  }));
-
-  return formatted;
+export const getAllReservationsService = async (): Promise<
+  ReservationResponseDTO[]
+> => {
+  const reservations = await repository.getAllReservationsRepository();
+  return reservations.map(toReservationResponseDTO);
 };
 
-export const getReservationByIdService = async (id: number) => {
-  const reservation = await repository.getReservationById(id)
-  if(!reservation) return reservation
-  return {
-    ...reservation,
-    startDate: formatDateToBrazil(reservation.startDate),
-    endDate: formatDateToBrazil(reservation.endDate),
-    createdAt: formatDateToBrazil(reservation.createdAt),
-    client: {
-      ...reservation.client,
-      createdAt: formatDateToBrazil(reservation.client.createdAt),
-    },
-    rental: {
-      ...reservation.rental,
-      createdAt: formatDateToBrazil(reservation.rental.createdAt),
-    }
-  };
+export const getReservationByIdService = async (
+  id: number
+): Promise<ReservationResponseDTO | null> => {
+  const reservation = await repository.getReservationByIdRepository(id);
+  return reservation ? toReservationResponseDTO(reservation) : null;
 };
 
-export const updateReservationService = async (id: number, data: any) => {
-  const reservation = await repository.updateReservation(id, data);
-  return {
-    ...reservation,
-    startDate: formatDateToBrazil(reservation.startDate),
-    endDate: formatDateToBrazil(reservation.endDate),
-    createdAt: formatDateToBrazil(reservation.createdAt),
-  };
-}
+export const updateReservationService = async (
+  id: number,
+  data: ReservationUpdateDTO
+): Promise<ReservationResponseDTO> => {
+  const updated = await repository.updateReservationRepository(id, data);
+  return toReservationResponseDTO(updated);
+};
 
-export const deleteReservationService = (id: number) => repository.deleteReservation(id);
+export const deleteReservationService = async (id: number): Promise<void> => {
+  await repository.deleteReservationRepository(id);
+};

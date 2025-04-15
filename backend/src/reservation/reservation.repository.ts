@@ -1,16 +1,66 @@
-import prisma from '../prisma/prismaClient'
+import prisma from "../prisma/prismaClient";
+import {
+  ReservationEntity,
+  ReservationPrismaInput,
+  ReservationUpdateDTO,
+} from "./reservation.types";
 
-export const createReservation = (data: any) => prisma.reservation.create({ data });
+export const createReservationRepository = async (
+  data: ReservationPrismaInput
+): Promise<ReservationEntity> => {
+  return prisma.reservation.create({
+    data,
+    include: {
+      client: true,
+      rental: true,
+    },
+  });
+};
 
-export const getAllReservations = () => prisma.reservation.findMany({
-  include: { client: true, rental: true }
-});
+export const getAllReservationsRepository = async () => {
+  return prisma.reservation.findMany({
+    include: {
+      client: true,
+      rental: true,
+    },
+    orderBy: { id: "desc" },
+  });
+};
 
-export const getReservationById = (id: number) =>
-  prisma.reservation.findUnique({ where: { id }, include: { client: true, rental: true } });
+export const getReservationByIdRepository = async (
+  id: number
+): Promise<ReservationEntity | null> => {
+  return prisma.reservation.findUnique({
+    where: { id },
+    include: {
+      client: true,
+      rental: true,
+    },
+  });
+};
 
-export const updateReservation = (id: number, data: any) =>
-  prisma.reservation.update({ where: { id }, data });
+export const updateReservationRepository = async (
+  id: number,
+  data: ReservationUpdateDTO
+): Promise<ReservationEntity> => {
+  return prisma.reservation.update({
+    where: { id },
+    data: {
+      ...data,
+      startDate: data.startDate ? new Date(data.startDate) : undefined,
+      endDate: data.endDate ? new Date(data.endDate) : undefined,
+    },
+    include: {
+      client: true,
+      rental: true,
+    },
+  });
+};
 
-export const deleteReservation = (id: number) =>
-  prisma.reservation.delete({ where: { id } });
+export const deleteReservationRepository = async (
+  id: number
+): Promise<void> => {
+  await prisma.reservation.delete({
+    where: { id },
+  });
+};

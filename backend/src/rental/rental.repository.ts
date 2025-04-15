@@ -1,40 +1,58 @@
-import prisma from '../prisma/prismaClient';
+import prisma from "../prisma/prismaClient";
+import { RentalCreateDTO, RentalEntity, RentalUpdateDTO } from "./rental.types";
 
-export const getAllRentals = () => prisma.rental.findMany();
+export const getAllRentalsRepository = (): Promise<RentalEntity[]> => {
+  return prisma.rental.findMany();
+};
 
-export const getRentalById = (id: number) => prisma.rental.findUnique({ where: { id } });
+export const getRentalByIdRepository = (
+  id: number
+): Promise<RentalEntity | null> => {
+  return prisma.rental.findUnique({
+    where: { id },
+  });
+};
 
-export const createRental = (data: {
-  name: string;
-  type: string;
-  description?: string;
-  pricePerHour: number;
-  minTime: number;
-  maxTime: number;
-}) => prisma.rental.create({ data });
+export const createRentalRepository = (
+  data: RentalCreateDTO
+): Promise<RentalEntity> => {
+  return prisma.rental.create({
+    data,
+  });
+};
 
-export const updateRental = (id: number, data: any) =>
-  prisma.rental.update({ where: { id }, data });
+export const updateRentalRepository = (
+  id: number,
+  data: RentalUpdateDTO
+): Promise<RentalEntity> => {
+  return prisma.rental.update({
+    where: { id },
+    data,
+  });
+};
 
-export const deleteRental = (id: number) => prisma.rental.delete({ where: { id } });
+export const deleteRentalRepository = (id: number): Promise<void> => {
+  return prisma.rental
+    .delete({
+      where: { id },
+    })
+    .then(() => {});
+};
 
-export const getAvailableRentalsRepository = async (start: Date, end: Date, duration: number) => {
+export const getAvailableRentalsRepository = (
+  start: Date,
+  end: Date,
+  rentalDuration: number
+): Promise<RentalEntity[]> => {
   return prisma.rental.findMany({
     where: {
-      minTime: { lte: duration },
-      maxTime: { gte: duration },
+      minTime: { lte: rentalDuration },
+      maxTime: { gte: rentalDuration },
       reservations: {
         none: {
-          AND: [
-            { startDate: { lte: end } },
-            { endDate: { gte: start } },
-          ],
+          AND: [{ startDate: { lte: end } }, { endDate: { gte: start } }],
         },
       },
     },
   });
 };
-
-
-
-
