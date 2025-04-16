@@ -1,4 +1,3 @@
-// src/features/rentals/pages/RentalForm/rental.schema.ts
 import { z } from "zod";
 
 export const rentalSchema = z.object({

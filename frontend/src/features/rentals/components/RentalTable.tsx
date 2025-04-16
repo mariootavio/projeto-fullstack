@@ -1,4 +1,3 @@
-// src/features/rentals/components/RentalTable.tsx
 import { Pencil, Trash } from "lucide-react";
 import { Rental } from "../types/rental";
 import { Table } from "./RentalTable.styles";

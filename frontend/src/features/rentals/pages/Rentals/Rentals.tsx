@@ -1,4 +1,3 @@
-// src/features/rentals/pages/Rentals/Rentals.tsx
 import { useEffect, useState } from "react";
 import { useRentalStore } from "../../store/rentalStore";
 import RentalTable from "../../components/RentalTable";

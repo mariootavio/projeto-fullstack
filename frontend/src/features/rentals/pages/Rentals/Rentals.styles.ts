@@ -1,4 +1,3 @@
-// src/features/rentals/pages/Rentals/Rentals.styles.ts
 import styled from "styled-components";
 
 export const PageWrapper = styled.div`

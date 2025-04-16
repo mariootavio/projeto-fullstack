@@ -1,4 +1,3 @@
-// src/utils/formatter.ts
 export class Formatter {
   static formatCPF(value: string): string {
     return value

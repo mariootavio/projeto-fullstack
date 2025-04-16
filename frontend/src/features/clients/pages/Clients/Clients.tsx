@@ -49,7 +49,6 @@ const Clients = () => {
             clientId={editingClientId}
             onClose={() => {
               setShowModal(false);
-              //fetchClients();
             }}
           />
         </Modal>

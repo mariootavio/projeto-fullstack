@@ -1,4 +1,3 @@
-// src/features/rentals/components/RentalTable.styles.ts
 import styled from "styled-components";
 
 export const Table = styled.table`
