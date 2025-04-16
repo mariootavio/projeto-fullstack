@@ -1,8 +1,8 @@
 import { Pencil, Trash } from "lucide-react";
 import { Rental } from "../types/rental";
 import { Table } from "../../../components/styles/SharedTableStyles";
-import EditButton from "../../../components/common/EditButton";
-import DeleteButton from "../../../components/common/DeleteButton";
+import EditButton from "../../../components/Button/EditButton";
+import DeleteButton from "../../../components/Button/DeleteButton";
 import { Formatter } from "../../../utils/formatter";
 
 interface RentalTableProps {

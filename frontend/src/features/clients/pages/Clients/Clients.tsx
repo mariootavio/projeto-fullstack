@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import ClientTable from "../../components/ClientTable";
-import PrimaryButton from "../../../../components/common/PrimaryButton";
+import PrimaryButton from "../../../../components/Button/PrimaryButton";
 import {
   PageWrapper,
   HeaderWrapper,
   TopActions,
 } from "../../../../components/styles/SharedScreenStyles";
 import ClientForm from "../ClientsForm/ClientForm";
-import Modal from "../../../../components/common/Modal";
+import Modal from "../../../../components/Modal/Modal";
 import { useClientStore } from "../../store/clientStore";
 
 const Clients = () => {

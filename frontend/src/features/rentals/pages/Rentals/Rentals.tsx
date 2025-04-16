@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRentalStore } from "../../store/rentalStore";
 import RentalTable from "../../components/RentalTable";
-import Modal from "../../../../components/common/Modal";
-import PrimaryButton from "../../../../components/common/PrimaryButton";
+import Modal from "../../../../components/Modal/Modal";
+import PrimaryButton from "../../../../components/Button/PrimaryButton";
 import RentalForm from "../RentalForm/RentalForm";
 import {
   PageWrapper,

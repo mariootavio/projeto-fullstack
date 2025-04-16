@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
@@ -10,7 +10,7 @@ const Overlay = styled.div`
   align-items: center;
 `;
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
   background: ${({ theme }) => theme.colors.background};
   padding: 2rem;
   border-radius: 12px;
@@ -21,7 +21,7 @@ const ModalContainer = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.primaryLight};
 `;
 
-const CloseButton = styled.button`
+export const CloseButton = styled.button`
   position: absolute;
   top: 0.75rem;
   right: 1rem;
@@ -39,19 +39,3 @@ const CloseButton = styled.button`
     background: ${({ theme }) => theme.colors.primaryLight};
   }
 `;
-
-interface ModalProps {
-  children: React.ReactNode;
-  onClose: () => void;
-}
-
-const Modal = ({ children, onClose }: ModalProps) => (
-  <Overlay>
-    <ModalContainer>
-      <CloseButton onClick={onClose}>×</CloseButton>
-      {children}
-    </ModalContainer>
-  </Overlay>
-);
-
-export default Modal;
