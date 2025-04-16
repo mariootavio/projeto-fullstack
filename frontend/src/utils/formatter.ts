@@ -1,3 +1,4 @@
+// src/utils/formatter.ts
 export class Formatter {
   static formatCPF(value: string): string {
     return value
@@ -25,5 +26,16 @@ export class Formatter {
       hour: "2-digit",
       minute: "2-digit",
     });
+  }
+
+  static currency(value: number): string {
+    return value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
+
+  static hours(value: number): string {
+    return `${value}h`;
   }
 }

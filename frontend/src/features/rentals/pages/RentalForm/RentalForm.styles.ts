@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const FormWrapper = styled.div`
   max-width: 600px;
+  margin: 0 auto;
 `;
 
 export const Form = styled.form`
@@ -10,15 +11,9 @@ export const Form = styled.form`
   gap: 1rem;
 `;
 
-export const FieldGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 export const Label = styled.label`
-  font-weight: 500;
-  margin-bottom: 0.25rem;
   font-size: 0.95rem;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.primary};
 `;
 
@@ -30,6 +25,7 @@ export const Input = styled.input`
 `;
 
 export const SubmitButton = styled.button`
+  margin-top: 1.5rem;
   padding: 0.75rem;
   font-size: 1rem;
   border: none;
@@ -45,11 +41,17 @@ export const SubmitButton = styled.button`
 
 export const ErrorMessage = styled.p`
   color: red;
+  margin-top: -0.5rem;
   font-size: 0.875rem;
-  margin-top: 0.25rem;
+`;
+
+export const FieldGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 `;
 
 export const Title = styled.h2`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: ${({ theme }) => theme.colors.primary};
 `;

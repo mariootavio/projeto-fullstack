@@ -1,3 +1,4 @@
+// src/features/clients/pages/ClientForm/ClientForm.tsx
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,9 +7,12 @@ import {
   FormWrapper,
   Form,
   Input,
+  Label,
   SubmitButton,
   ErrorMessage,
-} from "./ClientForm.styles";
+  FieldGroup,
+  Title,
+} from "../../../../components/common/SharedFormStyles";
 import { useClientStore } from "../../store/clientStore";
 import { Formatter } from "../../../../utils/formatter";
 
@@ -81,29 +85,41 @@ const ClientForm = ({ clientId, onClose }: ClientFormProps) => {
 
   return (
     <FormWrapper>
-      <h2>{isEditMode ? "Editar Cliente" : "Novo Cliente"}</h2>
+      <Title>{isEditMode ? "Editar Cliente" : "Novo Cliente"}</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Input {...register("name" as const)} placeholder="Nome" />
-        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        <FieldGroup>
+          <Label>Nome</Label>
+          <Input {...register("name")} placeholder="Digite o nome do cliente" />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        </FieldGroup>
 
-        <Input {...register("email" as const)} placeholder="Email" />
-        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        <FieldGroup>
+          <Label>Email</Label>
+          <Input {...register("email")} placeholder="Digite o email" />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        </FieldGroup>
 
-        <Input
-          {...register("phone" as const)}
-          placeholder="Telefone"
-          value={Formatter.formatPhone(watch("phone") || "")}
-          onChange={(e) => setValue("phone", e.target.value)}
-        />
-        {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
+        <FieldGroup>
+          <Label>Telefone</Label>
+          <Input
+            {...register("phone")}
+            placeholder="Digite o telefone"
+            value={Formatter.formatPhone(watch("phone") || "")}
+            onChange={(e) => setValue("phone", e.target.value)}
+          />
+          {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
+        </FieldGroup>
 
-        <Input
-          {...register("cpf" as const)}
-          placeholder="CPF"
-          value={Formatter.formatCPF(watch("cpf") || "")}
-          onChange={(e) => setValue("cpf", e.target.value)}
-        />
-        {errors.cpf && <ErrorMessage>{errors.cpf.message}</ErrorMessage>}
+        <FieldGroup>
+          <Label>CPF</Label>
+          <Input
+            {...register("cpf")}
+            placeholder="Digite o CPF"
+            value={Formatter.formatCPF(watch("cpf") || "")}
+            onChange={(e) => setValue("cpf", e.target.value)}
+          />
+          {errors.cpf && <ErrorMessage>{errors.cpf.message}</ErrorMessage>}
+        </FieldGroup>
 
         <SubmitButton type="submit">
           {isEditMode ? "Salvar Alterações" : "Cadastrar Cliente"}
