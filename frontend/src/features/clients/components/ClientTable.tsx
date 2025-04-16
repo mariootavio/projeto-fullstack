@@ -1,9 +1,9 @@
 import { Pencil, Trash } from "lucide-react";
-
 import { Client } from "../types/client";
 import { Table } from "./ClientTable.styles";
 import EditButton from "../../../components/common/EditButton";
 import DeleteButton from "../../../components/common/DeleteButton";
+import { Formatter } from "../../../utils/formatter";
 
 interface ClientTableProps {
   clients: Client[];
@@ -29,9 +29,11 @@ const ClientTable = ({ clients, onEdit, onDelete }: ClientTableProps) => {
           <tr key={client.id}>
             <td data-label="Nome">{client.name}</td>
             <td data-label="Email">{client.email}</td>
-            <td data-label="Telefone">{client.phone}</td>
-            <td data-label="CPF">{client.cpf}</td>
-            <td data-label="Data de Criação">{client.createdAt}</td>
+            <td data-label="Telefone">{Formatter.formatPhone(client.phone)}</td>
+            <td data-label="CPF">{Formatter.formatCPF(client.cpf)}</td>
+            <td data-label="Data de Criação">
+              {Formatter.formatDate(client.createdAt)}
+            </td>
             <td data-label="Ações">
               <EditButton onClick={() => onEdit(client)}>
                 <Pencil size={16} />

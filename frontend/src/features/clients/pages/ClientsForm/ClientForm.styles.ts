@@ -30,3 +30,9 @@ export const SubmitButton = styled.button`
     opacity: 0.9;
   }
 `;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  margin: -8px 0 8px;
+  font-size: 0.875rem;
+`;

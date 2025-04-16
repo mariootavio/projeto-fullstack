@@ -1,6 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { clientSchema, ClientFormData } from "../ClientsForm/client.schema";
+import {
+  FormWrapper,
+  Form,
+  Input,
+  SubmitButton,
+  ErrorMessage,
+} from "./ClientForm.styles";
 import { useClientStore } from "../../store/clientStore";
-import { FormWrapper, Form, Input, SubmitButton } from "./ClientForm.styles";
+import { Formatter } from "../../../../utils/formatter";
 
 interface ClientFormProps {
   clientId: number | null;
@@ -9,6 +19,7 @@ interface ClientFormProps {
 
 const ClientForm = ({ clientId, onClose }: ClientFormProps) => {
   const isEditMode = !!clientId;
+
   const {
     selectedClient,
     fetchClientById,
@@ -17,11 +28,21 @@ const ClientForm = ({ clientId, onClose }: ClientFormProps) => {
     clearSelectedClient,
   } = useClientStore();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    cpf: "",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<ClientFormData>({
+    resolver: zodResolver(clientSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      cpf: "",
+    },
   });
 
   useEffect(() => {
@@ -33,25 +54,26 @@ const ClientForm = ({ clientId, onClose }: ClientFormProps) => {
 
   useEffect(() => {
     if (selectedClient) {
-      const { name, email, phone, cpf } = selectedClient;
-      setForm({ name, email, phone, cpf });
+      reset({
+        name: selectedClient.name,
+        email: selectedClient.email,
+        phone: Formatter.formatPhone(selectedClient.phone),
+        cpf: Formatter.formatCPF(selectedClient.cpf),
+      });
     }
-  }, [selectedClient]);
+  }, [selectedClient, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ClientFormData) => {
+    const cleanedData = {
+      ...data,
+      phone: data.phone.replace(/\D/g, ""),
+      cpf: data.cpf.replace(/\D/g, ""),
+    };
 
     if (isEditMode && clientId) {
-      await updateClientById(clientId, form);
+      await updateClientById(clientId, cleanedData);
     } else {
-      await createNewClient(form);
+      await createNewClient(cleanedData);
     }
 
     onClose();
@@ -60,31 +82,29 @@ const ClientForm = ({ clientId, onClose }: ClientFormProps) => {
   return (
     <FormWrapper>
       <h2>{isEditMode ? "Editar Cliente" : "Novo Cliente"}</h2>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input {...register("name" as const)} placeholder="Nome" />
+        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+
+        <Input {...register("email" as const)} placeholder="Email" />
+        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+
         <Input
-          name="name"
-          placeholder="Nome"
-          value={form.name}
-          onChange={handleChange}
-        />
-        <Input
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-        />
-        <Input
-          name="phone"
+          {...register("phone" as const)}
           placeholder="Telefone"
-          value={form.phone}
-          onChange={handleChange}
+          value={Formatter.formatPhone(watch("phone") || "")}
+          onChange={(e) => setValue("phone", e.target.value)}
         />
+        {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
+
         <Input
-          name="cpf"
+          {...register("cpf" as const)}
           placeholder="CPF"
-          value={form.cpf}
-          onChange={handleChange}
+          value={Formatter.formatCPF(watch("cpf") || "")}
+          onChange={(e) => setValue("cpf", e.target.value)}
         />
+        {errors.cpf && <ErrorMessage>{errors.cpf.message}</ErrorMessage>}
+
         <SubmitButton type="submit">
           {isEditMode ? "Salvar Alterações" : "Cadastrar Cliente"}
         </SubmitButton>
