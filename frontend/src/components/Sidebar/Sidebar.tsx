@@ -1,19 +1,47 @@
-import { NavLink } from "react-router-dom";
-import { Container, Nav } from "./Sidebar.styles";
+import { useLocation } from "react-router-dom";
+import { X } from "lucide-react";
+import {
+  SidebarContainer,
+  SidebarHeader,
+  SidebarNav,
+  NavItem,
+  CloseButton,
+} from "./Sidebar.styles";
 
-const Sidebar = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose?: () => void;
+}
+
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  const location = useLocation();
+
   return (
-    <Container>
-      <h2>Sistema</h2>
-      <Nav>
-        <NavLink to="/" end>
+    <SidebarContainer isOpen={isOpen}>
+      <SidebarHeader>
+        <span>Sistema</span>
+        <CloseButton onClick={onClose}>
+          <X />
+        </CloseButton>
+      </SidebarHeader>
+      <SidebarNav>
+        <NavItem to="/" $active={location.pathname === "/"}>
           Dashboard
-        </NavLink>
-        <NavLink to="/clients">Clientes</NavLink>
-        <NavLink to="/rentals">Locações</NavLink>
-        <NavLink to="/reservations">Reservas</NavLink>
-      </Nav>
-    </Container>
+        </NavItem>
+        <NavItem to="/clients" $active={location.pathname === "/clients"}>
+          Clientes
+        </NavItem>
+        <NavItem to="/rentals" $active={location.pathname === "/rentals"}>
+          Locações
+        </NavItem>
+        <NavItem
+          to="/reservations"
+          $active={location.pathname === "/reservations"}
+        >
+          Reservas
+        </NavItem>
+      </SidebarNav>
+    </SidebarContainer>
   );
 };
 

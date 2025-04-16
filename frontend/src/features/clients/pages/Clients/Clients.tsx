@@ -1,0 +1,61 @@
+import { useEffect, useState } from "react";
+import ClientTable from "../../components/ClientTable";
+import PrimaryButton from "../../../../components/common/PrimaryButton";
+import { PageWrapper, HeaderWrapper, TopActions } from "./Clients.styles";
+import ClientForm from "../ClientsForm/ClientForm";
+import Modal from "../../../../components/common/Modal";
+import { useClientStore } from "../../store/clientStore";
+
+const Clients = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [editingClientId, setEditingClientId] = useState<number | null>(null);
+
+  const { clients, fetchClients, deleteClientById } = useClientStore();
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  const openNewClientModal = () => {
+    setEditingClientId(null);
+    setShowModal(true);
+  };
+
+  const openEditModal = (client: any) => {
+    setEditingClientId(client.id);
+    setShowModal(true);
+  };
+
+  return (
+    <PageWrapper>
+      <HeaderWrapper>
+        <h1 style={{ margin: 0 }}>Clientes</h1>
+        <TopActions>
+          <PrimaryButton onClick={openNewClientModal}>
+            + Novo Cliente
+          </PrimaryButton>
+        </TopActions>
+      </HeaderWrapper>
+
+      <ClientTable
+        clients={clients}
+        onEdit={openEditModal}
+        onDelete={deleteClientById}
+      />
+
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <ClientForm
+            clientId={editingClientId}
+            onClose={() => {
+              setShowModal(false);
+              //fetchClients();
+            }}
+          />
+        </Modal>
+      )}
+    </PageWrapper>
+  );
+};
+
+export default Clients;
