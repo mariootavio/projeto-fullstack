@@ -4,7 +4,11 @@ import RentalTable from "../../components/RentalTable";
 import Modal from "../../../../components/common/Modal";
 import PrimaryButton from "../../../../components/common/PrimaryButton";
 import RentalForm from "../RentalForm/RentalForm";
-import { PageWrapper, HeaderWrapper, TopActions } from "./Rentals.styles";
+import {
+  PageWrapper,
+  HeaderWrapper,
+  TopActions,
+} from "../../../../components/styles/SharedScreenStyles";
 import { Rental } from "../../types/rental";
 
 const Rentals = () => {

@@ -1,17 +1,8 @@
 import styled from "styled-components";
+import BaseButton from "./BaseButton";
 
-const DeleteButton = styled.button`
+const DeleteButton = styled(BaseButton)`
   background-color: ${({ theme }) => theme.colors.primaryLight};
-  color: ${({ theme }) => theme.colors.secondary};
-  border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-
-  &:hover {
-    opacity: 0.85;
-  }
 `;
 
 export default DeleteButton;

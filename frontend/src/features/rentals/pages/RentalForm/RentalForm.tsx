@@ -10,8 +10,8 @@ import {
   ErrorMessage,
   FieldGroup,
   Title,
-} from "../../../../components/common/SharedFormStyles";
-import { rentalSchema, RentalFormData } from "./rental.schema";
+} from "../../../../components/styles/SharedFormStyles";
+import { rentalSchema, RentalFormData } from "../../validation/rental.schema";
 import { useRentalStore } from "../../store/rentalStore";
 
 interface RentalFormProps {
