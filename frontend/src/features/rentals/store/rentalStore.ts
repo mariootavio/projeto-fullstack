@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Rental, RentalFormData } from "../types/rental";
+import { Rental, RentalFormData } from "../types/Rental";
 import {
   getAllRentals,
   getRentalById,

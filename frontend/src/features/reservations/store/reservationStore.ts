@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { reservationService } from "../services/reservationService";
 import { toast } from "react-toastify";
 import { Reservation } from "../type/reservation";
-import { Rental } from "../../rentals/types/rental";
+import { Rental } from "../../rentals/types/Rental";
 
 interface Client {
   id: number;

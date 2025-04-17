@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pencil, Trash } from "lucide-react";
-import { Rental } from "../types/rental";
+import { Rental } from "../types/Rental";
 import { Table } from "../../../components/styles/SharedTableStyles";
 import EditButton from "../../../components/Button/EditButton";
 import DeleteButton from "../../../components/Button/DeleteButton";

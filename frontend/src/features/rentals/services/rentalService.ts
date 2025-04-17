@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Rental, RentalFormData } from "../types/rental";
+import { Rental, RentalFormData } from "../types/Rental";
 
 const API = "http://localhost:3001/api/rentals";
 

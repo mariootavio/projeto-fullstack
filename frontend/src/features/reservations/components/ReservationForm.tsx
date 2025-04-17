@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useReservationStore } from "../store/reservationStore";
@@ -22,24 +22,12 @@ import {
   ReservationFormData,
   reservationSchema,
 } from "../validation/reservationSchema";
+import { RentalType } from "../../rentals/types/RentalType";
 
 interface ReservationFormProps {
   reservationId: number | null;
   onSubmitSuccess: () => void;
 }
-
-const truncateToMinutes = (date: Date) => {
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  return date;
-};
-
-const formatDateTimeLocalInput = (date: Date) => {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-    date.getDate()
-  )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
 
 const ReservationForm = ({
   reservationId,
@@ -58,6 +46,7 @@ const ReservationForm = ({
     watch,
     setValue,
     formState: { errors },
+    clearErrors,
   } = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
   });
@@ -65,6 +54,7 @@ const ReservationForm = ({
   const startDate = watch("startDate");
   const endDate = watch("endDate");
   const rentalId = watch("rentalId");
+  const rentalTypeKey = watch("type");
 
   const isEditMode = !!reservationId;
 
@@ -73,21 +63,23 @@ const ReservationForm = ({
   useAvailableRentalsOnDateChange(startDate, endDate, isEditMode);
   useFinalPriceCalculator(rentalId, startDate, endDate, setFinalPrice);
 
-  const onSubmit = (data: ReservationFormData) => {
-    const payload = {
-      ...data,
-      finalPrice,
-    };
+  useEffect(() => {
+    // Resetar rentalId se trocar o tipo
+    setValue("rentalId", 0);
+    clearErrors("rentalId");
+  }, [rentalTypeKey]);
 
+  const onSubmit = (data: ReservationFormData) => {
+    const payload = { ...data, finalPrice };
     const action = reservationId
       ? updateReservationById(reservationId, payload)
       : createNewReservation(payload);
-
     action.then(onSubmitSuccess);
   };
 
-  const now = truncateToMinutes(new Date());
-  const minDateTime = formatDateTimeLocalInput(now);
+  const filteredRentals = rentalTypeKey
+    ? availableRentals.filter((rental) => rental.type === rentalTypeKey)
+    : availableRentals;
 
   return (
     <FormWrapper>
@@ -109,11 +101,25 @@ const ReservationForm = ({
         </FieldGroup>
 
         <FieldGroup>
+          <Label>Tipo de Locação</Label>
+          <Select {...register("type")}>
+            <option value="">Selecione</option>
+            {Object.entries(RentalType).map(([key, label]) => (
+              <option key={key} value={label}>
+                {label.charAt(0).toUpperCase() + label.slice(1)}
+              </option>
+            ))}
+          </Select>
+          {errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
+        </FieldGroup>
+
+        <FieldGroup>
           <Label>Data de Início</Label>
           <Input
             type="datetime-local"
-            min={minDateTime}
             {...register("startDate")}
+            onInvalid={(e) => e.preventDefault()}
+            onInput={(e) => e.currentTarget.setCustomValidity("")}
           />
           {errors.startDate && (
             <ErrorMessage>{errors.startDate.message}</ErrorMessage>
@@ -124,8 +130,9 @@ const ReservationForm = ({
           <Label>Data de Término</Label>
           <Input
             type="datetime-local"
-            min={minDateTime}
             {...register("endDate")}
+            onInvalid={(e) => e.preventDefault()}
+            onInput={(e) => e.currentTarget.setCustomValidity("")}
           />
           {errors.endDate && (
             <ErrorMessage>{errors.endDate.message}</ErrorMessage>
@@ -136,7 +143,7 @@ const ReservationForm = ({
           <Label>Locação Disponível</Label>
           <Select {...register("rentalId")}>
             <option value="">Selecione</option>
-            {availableRentals.map((rental) => (
+            {filteredRentals.map((rental) => (
               <option key={rental.id} value={rental.id}>
                 {rental.name} - R$ {rental.pricePerHour}/h
               </option>

@@ -1,5 +1,5 @@
 // src/types/reservation.ts
-import { Rental } from "../../rentals/types/rental";
+import { Rental } from "../../rentals/types/Rental";
 
 export interface Reservation {
   id?: number;

@@ -9,7 +9,7 @@ import {
   HeaderWrapper,
   TopActions,
 } from "../../../../components/styles/SharedScreenStyles";
-import { Rental } from "../../types/rental";
+import { Rental } from "../../types/Rental";
 
 const Rentals = () => {
   const [showModal, setShowModal] = useState(false);

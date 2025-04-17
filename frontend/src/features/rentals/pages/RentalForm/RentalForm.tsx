@@ -10,9 +10,11 @@ import {
   ErrorMessage,
   FieldGroup,
   Title,
+  Select,
 } from "../../../../components/styles/SharedFormStyles";
 import { rentalSchema, RentalFormData } from "../../validation/rental.schema";
 import { useRentalStore } from "../../store/rentalStore";
+import { RentalType } from "../../types/RentalType";
 
 interface RentalFormProps {
   rentalId: number | null;
@@ -89,7 +91,14 @@ const RentalForm = ({ rentalId, onClose }: RentalFormProps) => {
 
         <FieldGroup>
           <Label>Tipo</Label>
-          <Input {...register("type")} placeholder="Ex: Carro, Barco, Sala" />
+          <Select {...register("type")}>
+            <option value="">Selecione o tipo</option>
+            {Object.entries(RentalType).map(([key, value]) => (
+              <option key={key} value={value}>
+                {value}
+              </option>
+            ))}
+          </Select>
           {errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
         </FieldGroup>
 
