@@ -24,3 +24,13 @@ export const updateRental = async (id: number, data: RentalFormData) => {
 export const deleteRental = async (id: number) => {
   return axios.delete(`${API}/${id}`);
 };
+
+export const getAvailableRentals = async (
+  start: string,
+  end: string
+): Promise<Rental[]> => {
+  const response = await axios.get(`${API}/available`, {
+    params: { start, end },
+  });
+  return response.data;
+};
