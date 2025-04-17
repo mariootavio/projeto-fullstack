@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useReservationStore } from "../store/reservationStore";
 import { useRentalStore } from "../../rentals/store/rentalStore";
-import { ReservationFormData } from "../components/ReservationForm";
+import { ReservationFormData } from "../validation/reservationSchema";
 
 export const useLoadReservationForm = (
   reservationId: number | null,

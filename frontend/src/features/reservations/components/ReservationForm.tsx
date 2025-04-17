@@ -19,8 +19,8 @@ import { useClientsLoader } from "../hooks/useClientsLoader";
 import { useAvailableRentalsOnDateChange } from "../hooks/useAvailableRentalsOnDateChange";
 import { useFinalPriceCalculator } from "../hooks/useFinalPriceCalculator";
 import {
-  reservationSchema,
   ReservationFormData,
+  reservationSchema,
 } from "../validation/reservationSchema";
 
 interface ReservationFormProps {
@@ -28,17 +28,17 @@ interface ReservationFormProps {
   onSubmitSuccess: () => void;
 }
 
+const truncateToMinutes = (date: Date) => {
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+};
+
 const formatDateTimeLocalInput = (date: Date) => {
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
     date.getDate()
   )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
-
-const truncateToMinutes = (date: Date) => {
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  return date;
 };
 
 const ReservationForm = ({
@@ -66,9 +66,11 @@ const ReservationForm = ({
   const endDate = watch("endDate");
   const rentalId = watch("rentalId");
 
+  const isEditMode = !!reservationId;
+
   useClientsLoader();
   useLoadReservationForm(reservationId, setValue, setFinalPrice);
-  useAvailableRentalsOnDateChange(startDate, endDate);
+  useAvailableRentalsOnDateChange(startDate, endDate, isEditMode);
   useFinalPriceCalculator(rentalId, startDate, endDate, setFinalPrice);
 
   const onSubmit = (data: ReservationFormData) => {
@@ -86,9 +88,6 @@ const ReservationForm = ({
 
   const now = truncateToMinutes(new Date());
   const minDateTime = formatDateTimeLocalInput(now);
-  const endMinDateTime = startDate
-    ? formatDateTimeLocalInput(truncateToMinutes(new Date(startDate)))
-    : minDateTime;
 
   return (
     <FormWrapper>
@@ -125,7 +124,7 @@ const ReservationForm = ({
           <Label>Data de Término</Label>
           <Input
             type="datetime-local"
-            min={endMinDateTime}
+            min={minDateTime}
             {...register("endDate")}
           />
           {errors.endDate && (

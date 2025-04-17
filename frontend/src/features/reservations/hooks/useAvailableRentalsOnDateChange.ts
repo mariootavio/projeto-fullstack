@@ -3,19 +3,20 @@ import { useRentalStore } from "../../rentals/store/rentalStore";
 
 export const useAvailableRentalsOnDateChange = (
   startDate: string,
-  endDate: string
+  endDate: string,
+  isEditMode: boolean
 ) => {
   const { fetchAvailableRentals } = useRentalStore();
   const hasInitialized = useRef(false);
 
   useEffect(() => {
-    if (!startDate || !endDate) return;
-
-    if (!hasInitialized.current) {
+    if (!startDate || !endDate) {
+      return;
+    }
+    if (isEditMode && !hasInitialized.current) {
       hasInitialized.current = true;
       return;
     }
-
     fetchAvailableRentals(startDate, endDate);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isEditMode]);
 };

@@ -9,13 +9,6 @@ import {
   getAvailableRentals,
 } from "../services/rentalService";
 import { toast } from "react-toastify";
-
-interface ReservationRental extends Partial<Rental> {
-  id: number;
-  name: string;
-  pricePerHour: number;
-}
-
 interface RentalStore {
   rentals: Rental[];
   selectedRental: Rental | null;
