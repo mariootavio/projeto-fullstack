@@ -31,8 +31,8 @@ export const useClientStore = create<ClientStore>((set, get) => ({
     try {
       const data = await getAllClients();
       set({ clients: data });
-    } catch (error) {
-      toast.error("Erro ao buscar clientes");
+    } catch {
+      toast.error("Erro ao buscar clientes.");
     }
   },
 
@@ -40,7 +40,7 @@ export const useClientStore = create<ClientStore>((set, get) => ({
     try {
       const client = await getClientById(id);
       set({ selectedClient: client });
-    } catch (error) {
+    } catch {
       toast.error("Erro ao buscar cliente.");
     }
   },
@@ -49,8 +49,8 @@ export const useClientStore = create<ClientStore>((set, get) => ({
     try {
       await createClient(clientData);
       toast.success("Cliente cadastrado com sucesso!");
-      get().fetchClients();
-    } catch (error) {
+      await get().fetchClients();
+    } catch {
       toast.error("Erro ao cadastrar cliente.");
     }
   },
@@ -59,8 +59,8 @@ export const useClientStore = create<ClientStore>((set, get) => ({
     try {
       await updateClient(id, clientData);
       toast.success("Cliente atualizado com sucesso!");
-      get().fetchClients();
-    } catch (error) {
+      await get().fetchClients();
+    } catch {
       toast.error("Erro ao atualizar cliente.");
     }
   },
@@ -71,8 +71,14 @@ export const useClientStore = create<ClientStore>((set, get) => ({
       const updated = get().clients.filter((c) => c.id !== id);
       set({ clients: updated });
       toast.success("Cliente deletado com sucesso!");
-    } catch (error) {
-      toast.error("Erro ao deletar cliente.");
+    } catch (error: any) {
+      if (error?.response?.status === 409) {
+        toast.error(
+          "Este cliente possui reservas associadas e não pode ser removido."
+        );
+      } else {
+        toast.error("Erro ao deletar cliente.");
+      }
     }
   },
 

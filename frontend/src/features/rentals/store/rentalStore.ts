@@ -9,6 +9,7 @@ import {
   getAvailableRentals,
 } from "../services/rentalService";
 import { toast } from "react-toastify";
+
 interface RentalStore {
   rentals: Rental[];
   selectedRental: Rental | null;
@@ -48,23 +49,41 @@ export const useRentalStore = create<RentalStore>((set, get) => ({
   },
 
   createNewRental: async (data) => {
-    await createRental(data);
-    toast.success("Locação criada com sucesso!");
-    get().fetchRentals();
+    try {
+      await createRental(data);
+      toast.success("Locação criada com sucesso!");
+      await get().fetchRentals();
+    } catch {
+      toast.error("Erro ao criar locação.");
+    }
   },
 
   updateRentalById: async (id, data) => {
-    await updateRental(id, data);
-    toast.success("Locação atualizada com sucesso!");
-    get().fetchRentals();
+    try {
+      await updateRental(id, data);
+      toast.success("Locação atualizada com sucesso!");
+      await get().fetchRentals();
+    } catch {
+      toast.error("Erro ao atualizar locação.");
+    }
   },
 
   deleteRentalById: async (id) => {
-    await deleteRental(id);
-    set({
-      rentals: get().rentals.filter((r) => r.id !== id),
-    });
-    toast.success("Locação removida!");
+    try {
+      await deleteRental(id);
+      set({
+        rentals: get().rentals.filter((r) => r.id !== id),
+      });
+      toast.success("Locação removida!");
+    } catch (error: any) {
+      if (error?.response?.status === 409) {
+        toast.error(
+          "Esta locação está associada a uma reserva e não pode ser removida."
+        );
+      } else {
+        toast.error("Erro ao remover locação.");
+      }
+    }
   },
 
   fetchAvailableRentals: async (start, end) => {

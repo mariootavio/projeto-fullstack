@@ -6,5 +6,6 @@ export const theme = {
     secondary: "#ffffff", // Branco
     background: "#f9f9f9", // Cinza muito claro
     text: "#333333", // Cinza escuro
+    primaryDark: "#4b0082",
   },
 };
