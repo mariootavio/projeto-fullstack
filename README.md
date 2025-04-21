@@ -1,6 +1,6 @@
 # 🏠 Sistema de Locações
 
-Este é um sistema completo de gerenciamento de locações, desenvolvido com **TypeScript** no frontend e backend, utilizando **Prisma**, **React**, **Express**, e orquestrado via **Docker**. Todo o projeto é containerizado para garantir portabilidade e facilidade de setup.
+Este é um sistema completo de gerenciamento de locações, desenvolvido com **TypeScript** no frontend **React** e backend, utilizando **Prisma**, **Express**, e orquestrado via **Docker**. Todo o projeto é containerizado para garantir portabilidade e facilidade de setup.
 
 ---
 
