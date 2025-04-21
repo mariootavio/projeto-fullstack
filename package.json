@@ -1,0 +1,19 @@
+{
+    "name": "projeto-fullstack",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "docker-compose up --build",
+        "dev": "docker-compose up",
+        "stop": "docker-compose down",
+        "reset": "docker-compose down -v && docker-compose up --build",
+        "clear": "docker-compose down -v --remove-orphans && docker image prune -af",
+        "logs": "docker-compose logs -f",
+        "backend": "docker exec -it projeto-fullstack-backend-1 sh",
+        "frontend": "docker exec -it projeto-fullstack-frontend-1 sh",
+        "mysql": "docker exec -it mysql sh",
+        "prisma:migrate": "docker exec -it projeto-fullstack-backend-1 npx prisma migrate dev --name init",
+        "prisma:deploy": "docker exec -it projeto-fullstack-backend-1 npx prisma migrate deploy",
+        "prisma:studio": "docker exec -it projeto-fullstack-backend-1 npx prisma studio",
+        "ps": "docker-compose ps"
+    }
+}
