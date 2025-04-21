@@ -23,6 +23,8 @@ import {
   reservationSchema,
 } from "../validation/reservationSchema";
 import { RentalType } from "../../rentals/types/RentalType";
+import { reservationStatusOptions } from "../type/reservationStatusOptions";
+import { rentalTypeOptions } from "../../rentals/types/rentalTypeOptions";
 
 interface ReservationFormProps {
   reservationId: number | null;
@@ -106,9 +108,9 @@ const ReservationForm = ({
           <Label>Tipo de Locação</Label>
           <Select {...register("type")}>
             <option value="">Selecione</option>
-            {Object.entries(RentalType).map(([key, label]) => (
-              <option key={key} value={label}>
-                {label.charAt(0).toUpperCase() + label.slice(1)}
+            {rentalTypeOptions.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </Select>
@@ -160,10 +162,13 @@ const ReservationForm = ({
           <Label>Status</Label>
           <Select {...register("status")}>
             <option value="">Selecione</option>
-            <option value="PENDING">Pendente</option>
-            <option value="CONFIRMED">Confirmada</option>
-            <option value="CANCELLED">Cancelada</option>
+            {reservationStatusOptions.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </Select>
+
           {errors.status && (
             <ErrorMessage>{errors.status.message}</ErrorMessage>
           )}

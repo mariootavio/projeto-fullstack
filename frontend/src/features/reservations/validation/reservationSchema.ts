@@ -4,9 +4,7 @@ import { RentalType } from "../../rentals/types/RentalType";
 export const reservationSchema = z
   .object({
     clientId: z.coerce.number().min(1, "Selecione um cliente"),
-    type: z.nativeEnum(RentalType, {
-      errorMap: () => ({ message: "Selecione um tipo de locação" }),
-    }),
+    type: z.string().min(1, "Selecione um tipo de locação"),
     rentalId: z.coerce.number().min(1, "Selecione uma locação"),
     startDate: z.string().min(1, "Data inicial obrigatória"),
     endDate: z.string().min(1, "Data final obrigatória"),

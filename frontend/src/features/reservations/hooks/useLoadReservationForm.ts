@@ -40,6 +40,7 @@ export const useLoadReservationForm = (
       setValue("startDate", startDate);
       setValue("endDate", endDate);
       setValue("status", status);
+      setValue("type", rental?.type ?? "");
       setFinalPrice(finalPrice);
 
       // Adiciona a rental recebida diretamente (sem nova chamada)
