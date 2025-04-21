@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useReservationStore } from "../store/reservationStore";
@@ -24,6 +24,8 @@ import {
 } from "../validation/reservationSchema";
 import { reservationStatusOptions } from "../type/reservationStatusOptions";
 import { rentalTypeOptions } from "../../rentals/types/rentalTypeOptions";
+import { useResetRentalOnTypeChange } from "../hooks/useResetRentalOnTypeChange";
+import { useFilterRentalsByType } from "../hooks/useFilterRentalsByType";
 
 interface ReservationFormProps {
   reservationId: number | null;
@@ -63,12 +65,8 @@ const ReservationForm = ({
   useLoadReservationForm(reservationId, setValue, setFinalPrice);
   useAvailableRentalsOnDateChange(startDate, endDate, isEditMode);
   useFinalPriceCalculator(rentalId, startDate, endDate, setFinalPrice);
-
-  useEffect(() => {
-    // Resetar rentalId se trocar o tipo
-    setValue("rentalId", 0);
-    clearErrors("rentalId");
-  }, [rentalTypeKey]);
+  useResetRentalOnTypeChange(rentalTypeKey, setValue, clearErrors);
+  const filteredRentals = useFilterRentalsByType(rentalTypeKey);
 
   const onSubmit = (data: ReservationFormData) => {
     const payload = { ...data, finalPrice };
@@ -77,12 +75,6 @@ const ReservationForm = ({
       : createNewReservation(payload);
     action.then(onSubmitSuccess);
   };
-
-  console.log("rentalTypeKey ", rentalTypeKey);
-  console.log("availableRentals ", availableRentals);
-  const filteredRentals = rentalTypeKey
-    ? availableRentals.filter((rental) => rental.type === rentalTypeKey)
-    : availableRentals;
 
   return (
     <FormWrapper>
