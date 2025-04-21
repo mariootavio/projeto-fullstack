@@ -53,8 +53,12 @@ export const useRentalStore = create<RentalStore>((set, get) => ({
       await createRental(data);
       toast.success("Locação criada com sucesso!");
       await get().fetchRentals();
-    } catch {
-      toast.error("Erro ao criar locação.");
+    } catch (error: any) {
+      if (error?.response?.status === 400) {
+        toast.error("Já existe uma locação com esse nome.");
+      } else {
+        toast.error("Erro ao criar locação.");
+      }
     }
   },
 
@@ -63,8 +67,12 @@ export const useRentalStore = create<RentalStore>((set, get) => ({
       await updateRental(id, data);
       toast.success("Locação atualizada com sucesso!");
       await get().fetchRentals();
-    } catch {
-      toast.error("Erro ao atualizar locação.");
+    } catch (error: any) {
+      if (error?.response?.status === 400) {
+        toast.error("Já existe uma locação com esse nome.");
+      } else {
+        toast.error("Erro ao atualizar locação.");
+      }
     }
   },
 

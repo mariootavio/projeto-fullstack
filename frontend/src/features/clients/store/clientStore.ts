@@ -50,8 +50,12 @@ export const useClientStore = create<ClientStore>((set, get) => ({
       await createClient(clientData);
       toast.success("Cliente cadastrado com sucesso!");
       await get().fetchClients();
-    } catch {
-      toast.error("Erro ao cadastrar cliente.");
+    } catch (error: any) {
+      if (error?.response?.status === 400) {
+        toast.error("Já existe um cliente com este CPF.");
+      } else {
+        toast.error("Erro ao cadastrar cliente.");
+      }
     }
   },
 
@@ -60,8 +64,12 @@ export const useClientStore = create<ClientStore>((set, get) => ({
       await updateClient(id, clientData);
       toast.success("Cliente atualizado com sucesso!");
       await get().fetchClients();
-    } catch {
-      toast.error("Erro ao atualizar cliente.");
+    } catch (error: any) {
+      if (error?.response?.status === 400) {
+        toast.error("Já existe um cliente com este CPF.");
+      } else {
+        toast.error("Erro ao atualizar cliente.");
+      }
     }
   },
 
