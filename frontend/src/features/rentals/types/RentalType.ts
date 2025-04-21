@@ -1,7 +1,7 @@
 export enum RentalType {
-  VEHICLE = "veículo",
-  BOAT = "barco",
-  AIRCRAFT = "aeronave",
-  RESIDENCE = "residência",
-  APARTMENT = "apartamento",
+  VEHICLE = "VEÍCULO",
+  BOAT = "BARCO",
+  AIRCRAFT = "AERONAVE",
+  RESIDENCE = "RESIDÊNCIA",
+  APARTMENT = "APARTAMENTO",
 }

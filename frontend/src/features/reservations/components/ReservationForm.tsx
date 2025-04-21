@@ -77,6 +77,8 @@ const ReservationForm = ({
     action.then(onSubmitSuccess);
   };
 
+  console.log("rentalTypeKey ", rentalTypeKey);
+  console.log("availableRentals ", availableRentals);
   const filteredRentals = rentalTypeKey
     ? availableRentals.filter((rental) => rental.type === rentalTypeKey)
     : availableRentals;
