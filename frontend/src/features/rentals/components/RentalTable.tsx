@@ -25,49 +25,55 @@ const RentalTable = ({ rentals, onEdit, onDelete }: RentalTableProps) => {
 
   return (
     <>
-      <Table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Descrição</th>
-            <th>Preço Hora</th>
-            <th>Tempo Mínimo</th>
-            <th>Tempo Máximo</th>
-            <th>Data de Criação</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rentals.map((rental) => (
-            <tr key={rental.id}>
-              <td data-label="Nome">{rental.name}</td>
-              <td data-label="Tipo">{rental.type}</td>
-              <td data-label="Descrição">{rental.description || "-"}</td>
-              <td data-label="Preço Hora">
-                {Formatter.currency(rental.pricePerHour)}
-              </td>
-              <td data-label="Tempo Mínimo">
-                {Formatter.hours(rental.minTime)}
-              </td>
-              <td data-label="Tempo Máximo">
-                {Formatter.hours(rental.maxTime)}
-              </td>
-              <td data-label="Data de Criação">
-                {Formatter.formatDate(rental.createdAt)}
-              </td>
-              <td data-label="Ações">
-                <EditButton onClick={() => onEdit(rental)}>
-                  <Pencil size={16} />
-                </EditButton>
-                <DeleteButton onClick={() => setRentalIdToDelete(rental.id)}>
-                  <Trash size={16} />
-                </DeleteButton>
-              </td>
+      {rentals.length > 0 ? (
+        <Table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+              <th>Preço Hora</th>
+              <th>Tempo Mínimo</th>
+              <th>Tempo Máximo</th>
+              <th>Data de Criação</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {rentals.map((rental) => (
+              <tr key={rental.id}>
+                <td data-label="Nome">{rental.name}</td>
+                <td data-label="Tipo">{rental.type}</td>
+                <td data-label="Descrição">{rental.description || "-"}</td>
+                <td data-label="Preço Hora">
+                  {Formatter.currency(rental.pricePerHour)}
+                </td>
+                <td data-label="Tempo Mínimo">
+                  {Formatter.hours(rental.minTime)}
+                </td>
+                <td data-label="Tempo Máximo">
+                  {Formatter.hours(rental.maxTime)}
+                </td>
+                <td data-label="Data de Criação">
+                  {Formatter.formatDate(rental.createdAt)}
+                </td>
+                <td data-label="Ações">
+                  <EditButton onClick={() => onEdit(rental)}>
+                    <Pencil size={16} />
+                  </EditButton>
+                  <DeleteButton onClick={() => setRentalIdToDelete(rental.id)}>
+                    <Trash size={16} />
+                  </DeleteButton>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <p style={{ textAlign: "center", marginTop: "2rem", color: "#666" }}>
+          Nenhuma locação cadastrada.
+        </p>
+      )}
 
       {rentalIdToDelete !== null && (
         <DeleteConfirmationModal

@@ -29,41 +29,47 @@ const ClientTable = ({ clients, onEdit, onDelete }: ClientTableProps) => {
 
   return (
     <>
-      <Table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>CPF</th>
-            <th>Data de Criação</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {clients.map((client) => (
-            <tr key={client.id}>
-              <td data-label="Nome">{client.name}</td>
-              <td data-label="Email">{client.email}</td>
-              <td data-label="Telefone">
-                {Formatter.formatPhone(client.phone)}
-              </td>
-              <td data-label="CPF">{Formatter.formatCPF(client.cpf)}</td>
-              <td data-label="Data de Criação">
-                {Formatter.formatDate(client.createdAt)}
-              </td>
-              <td data-label="Ações">
-                <EditButton onClick={() => onEdit(client)}>
-                  <Pencil size={16} />
-                </EditButton>
-                <DeleteButton onClick={() => handleDeleteClick(client.id)}>
-                  <Trash size={16} />
-                </DeleteButton>
-              </td>
+      {clients.length > 0 ? (
+        <Table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Telefone</th>
+              <th>CPF</th>
+              <th>Data de Criação</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {clients.map((client) => (
+              <tr key={client.id}>
+                <td data-label="Nome">{client.name}</td>
+                <td data-label="Email">{client.email}</td>
+                <td data-label="Telefone">
+                  {Formatter.formatPhone(client.phone)}
+                </td>
+                <td data-label="CPF">{Formatter.formatCPF(client.cpf)}</td>
+                <td data-label="Data de Criação">
+                  {Formatter.formatDate(client.createdAt)}
+                </td>
+                <td data-label="Ações">
+                  <EditButton onClick={() => onEdit(client)}>
+                    <Pencil size={16} />
+                  </EditButton>
+                  <DeleteButton onClick={() => handleDeleteClick(client.id)}>
+                    <Trash size={16} />
+                  </DeleteButton>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <p style={{ textAlign: "center", marginTop: "2rem", color: "#666" }}>
+          Nenhum cliente cadastrado.
+        </p>
+      )}
 
       {clientIdToDelete !== null && (
         <DeleteConfirmationModal
