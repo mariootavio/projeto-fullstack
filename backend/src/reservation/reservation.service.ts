@@ -1,4 +1,3 @@
-import { formatDateToBrazil } from "../util/formatDate";
 import {
   toReservationPrismaInput,
   toReservationResponseDTO,
