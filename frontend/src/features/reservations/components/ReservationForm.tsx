@@ -22,9 +22,9 @@ import {
   ReservationFormData,
   reservationSchema,
 } from "../validation/reservationSchema";
-import { RentalType } from "../../rentals/types/RentalType";
 import { reservationStatusOptions } from "../type/reservationStatusOptions";
 import { rentalTypeOptions } from "../../rentals/types/rentalTypeOptions";
+import { useMinDateTimeNow } from "../hooks/useMinDateTimeNow";
 
 interface ReservationFormProps {
   reservationId: number | null;
@@ -59,6 +59,7 @@ const ReservationForm = ({
   const rentalTypeKey = watch("type");
 
   const isEditMode = !!reservationId;
+  const minDateTime = useMinDateTimeNow();
 
   useClientsLoader();
   useLoadReservationForm(reservationId, setValue, setFinalPrice);
@@ -121,6 +122,7 @@ const ReservationForm = ({
           <Label>Data de Início</Label>
           <Input
             type="datetime-local"
+            min={minDateTime}
             {...register("startDate")}
             onInvalid={(e) => e.preventDefault()}
             onInput={(e) => e.currentTarget.setCustomValidity("")}
@@ -134,6 +136,7 @@ const ReservationForm = ({
           <Label>Data de Término</Label>
           <Input
             type="datetime-local"
+            min={minDateTime}
             {...register("endDate")}
             onInvalid={(e) => e.preventDefault()}
             onInput={(e) => e.currentTarget.setCustomValidity("")}
