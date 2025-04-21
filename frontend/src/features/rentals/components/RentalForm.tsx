@@ -14,7 +14,7 @@ import {
 } from "../../../components/styles/SharedFormStyles";
 import { rentalSchema, RentalFormData } from "../validation/rental.schema";
 import { useRentalStore } from "../store/rentalStore";
-import { RentalType } from "../types/RentalType";
+import { rentalTypeOptions } from "../types/rentalTypeOptions";
 
 interface RentalFormProps {
   rentalId: number | null;
@@ -93,9 +93,9 @@ const RentalForm = ({ rentalId, onClose }: RentalFormProps) => {
           <Label>Tipo</Label>
           <Select {...register("type")}>
             <option value="">Selecione o tipo</option>
-            {Object.entries(RentalType).map(([key, value]) => (
-              <option key={key} value={value}>
-                {value}
+            {rentalTypeOptions.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </Select>

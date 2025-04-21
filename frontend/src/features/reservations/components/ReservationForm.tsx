@@ -25,6 +25,7 @@ import { reservationStatusOptions } from "../type/reservationStatusOptions";
 import { rentalTypeOptions } from "../../rentals/types/rentalTypeOptions";
 import { useResetRentalOnTypeChange } from "../hooks/useResetRentalOnTypeChange";
 import { useFilterRentalsByType } from "../hooks/useFilterRentalsByType";
+import { useClientStore } from "../../clients/store/clientStore";
 
 interface ReservationFormProps {
   reservationId: number | null;
@@ -35,8 +36,8 @@ const ReservationForm = ({
   reservationId,
   onSubmitSuccess,
 }: ReservationFormProps) => {
-  const { clients, createNewReservation, updateReservationById } =
-    useReservationStore();
+  const { createNewReservation, updateReservationById } = useReservationStore();
+  const { clients } = useClientStore();
 
   const [finalPrice, setFinalPrice] = useState(0);
 
