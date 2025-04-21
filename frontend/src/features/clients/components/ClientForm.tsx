@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { clientSchema, ClientFormData } from "../../validation/client.schema";
+import { clientSchema, ClientFormData } from "../validation/client.schema";
 import {
   FormWrapper,
   Form,
@@ -11,9 +11,9 @@ import {
   ErrorMessage,
   FieldGroup,
   Title,
-} from "../../../../components/styles/SharedFormStyles";
-import { useClientStore } from "../../store/clientStore";
-import { Formatter } from "../../../../utils/formatter";
+} from "../../../components/styles/SharedFormStyles";
+import { useClientStore } from "../store/clientStore";
+import { Formatter } from "../../../utils/formatter";
 
 interface ClientFormProps {
   clientId: number | null;

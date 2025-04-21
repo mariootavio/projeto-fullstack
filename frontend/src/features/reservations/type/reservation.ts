@@ -1,4 +1,3 @@
-// src/types/reservation.ts
 import { Rental } from "../../rentals/types/Rental";
 
 export interface Reservation {

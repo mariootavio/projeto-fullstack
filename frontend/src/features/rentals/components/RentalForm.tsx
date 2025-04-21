@@ -11,10 +11,10 @@ import {
   FieldGroup,
   Title,
   Select,
-} from "../../../../components/styles/SharedFormStyles";
-import { rentalSchema, RentalFormData } from "../../validation/rental.schema";
-import { useRentalStore } from "../../store/rentalStore";
-import { RentalType } from "../../types/RentalType";
+} from "../../../components/styles/SharedFormStyles";
+import { rentalSchema, RentalFormData } from "../validation/rental.schema";
+import { useRentalStore } from "../store/rentalStore";
+import { RentalType } from "../types/RentalType";
 
 interface RentalFormProps {
   rentalId: number | null;

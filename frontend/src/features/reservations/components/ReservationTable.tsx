@@ -1,6 +1,6 @@
-// src/features/reservations/components/ReservationTable.tsx
 import { useReservationStore } from "../store/reservationStore";
 import { useRentalStore } from "../../rentals/store/rentalStore";
+import { useClientStore } from "../../clients/store/clientStore";
 import { useEffect, useState } from "react";
 import { Pencil, Trash } from "lucide-react";
 import { Table } from "../../../components/styles/SharedTableStyles";
@@ -14,10 +14,9 @@ interface ReservationTableProps {
 }
 
 const ReservationTable = ({ onEdit, onDelete }: ReservationTableProps) => {
-  const { reservations, fetchReservations, clients, fetchClients } =
-    useReservationStore();
-
+  const { reservations, fetchReservations } = useReservationStore();
   const { rentals, fetchRentals } = useRentalStore();
+  const { fetchClients, clients } = useClientStore();
 
   const [reservationIdToDelete, setReservationIdToDelete] = useState<
     number | null

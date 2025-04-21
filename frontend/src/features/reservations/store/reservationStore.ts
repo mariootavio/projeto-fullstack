@@ -4,30 +4,21 @@ import { toast } from "react-toastify";
 import { Reservation } from "../type/reservation";
 import { Rental } from "../../rentals/types/Rental";
 
-interface Client {
-  id: number;
-  name: string;
-}
-
 interface ReservationStore {
   reservations: Reservation[];
   selectedReservation: Reservation | null;
-  clients: Client[];
   availableRentals: Rental[];
   fetchReservations: () => Promise<void>;
   fetchReservationById: (id: number) => Promise<void>;
   createNewReservation: (data: Reservation) => Promise<void>;
   updateReservationById: (id: number, data: Reservation) => Promise<void>;
   deleteReservationById: (id: number) => Promise<void>;
-  fetchClients: () => Promise<void>;
-  fetchAvailableRentals: (start: string, end: string) => Promise<void>;
   clearSelectedReservation: () => void;
 }
 
 export const useReservationStore = create<ReservationStore>((set) => ({
   reservations: [],
   selectedReservation: null,
-  clients: [],
   availableRentals: [],
 
   fetchReservations: async () => {
@@ -77,24 +68,5 @@ export const useReservationStore = create<ReservationStore>((set) => ({
       toast.error("Erro ao remover reserva");
     }
   },
-
-  fetchClients: async () => {
-    try {
-      const response = await reservationService.getClients();
-      set({ clients: response.data });
-    } catch (error) {
-      toast.error("Erro ao buscar clientes");
-    }
-  },
-
-  fetchAvailableRentals: async (start, end) => {
-    try {
-      const response = await reservationService.getAvailableRentals(start, end);
-      set({ availableRentals: response.data });
-    } catch (error) {
-      toast.error("Erro ao buscar locações disponíveis");
-    }
-  },
-
   clearSelectedReservation: () => set({ selectedReservation: null }),
 }));

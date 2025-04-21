@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useReservationStore } from "../store/reservationStore";
+import { useClientStore } from "../../clients/store/clientStore";
 
 export const useClientsLoader = () => {
-  const { clients, fetchClients } = useReservationStore();
+  const { clients, fetchClients } = useClientStore();
 
   useEffect(() => {
     if (clients.length === 0) {

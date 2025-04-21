@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { useRentalStore } from "../../store/rentalStore";
-import RentalTable from "../../components/RentalTable";
-import Modal from "../../../../components/Modal/Modal";
-import PrimaryButton from "../../../../components/Button/PrimaryButton";
-import RentalForm from "../RentalForm/RentalForm";
+import { useRentalStore } from "../store/rentalStore";
+import RentalTable from "../components/RentalTable";
+import Modal from "../../../components/Modal/Modal";
+import PrimaryButton from "../../../components/Button/PrimaryButton";
+import RentalForm from "../components/RentalForm";
 import {
   PageWrapper,
   HeaderWrapper,
   TopActions,
-} from "../../../../components/styles/SharedScreenStyles";
-import { Rental } from "../../types/Rental";
+} from "../../../components/styles/SharedScreenStyles";
+import { Rental } from "../types/Rental";
 
 const Rentals = () => {
   const [showModal, setShowModal] = useState(false);

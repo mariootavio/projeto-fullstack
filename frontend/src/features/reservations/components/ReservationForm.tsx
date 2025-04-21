@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useReservationStore } from "../store/reservationStore";
-import { useRentalStore } from "../../rentals/store/rentalStore";
 import {
   FormWrapper,
   Form,
@@ -38,8 +37,6 @@ const ReservationForm = ({
 }: ReservationFormProps) => {
   const { clients, createNewReservation, updateReservationById } =
     useReservationStore();
-
-  const { availableRentals } = useRentalStore();
 
   const [finalPrice, setFinalPrice] = useState(0);
 

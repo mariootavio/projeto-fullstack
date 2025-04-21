@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DefaultLayout from "../layouts/DefaultLayout";
-import Clients from "../features/clients/pages/Clients/Clients";
+import Clients from "../features/clients/pages/Clients";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import Rentals from "../features/rentals/pages/Rentals/Rentals";
+import Rentals from "../features/rentals/pages/Rentals";
 import Reservations from "../features/reservations/pages/Reservations";
 
 export const AppRoutes = () => (

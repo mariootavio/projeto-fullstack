@@ -1,4 +1,3 @@
-// src/features/rentals/types/rentalTypeOptions.ts
 export const rentalTypeOptions = [
   { label: "VEÍCULO", value: "VEÍCULO" },
   { label: "BARCO", value: "BARCO" },

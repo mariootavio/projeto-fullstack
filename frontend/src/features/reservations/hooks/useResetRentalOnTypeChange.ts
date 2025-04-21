@@ -1,4 +1,3 @@
-// src/features/reservations/hooks/useResetRentalOnTypeChange.ts
 import { useEffect } from "react";
 import { UseFormSetValue, UseFormClearErrors } from "react-hook-form";
 import { ReservationFormData } from "../validation/reservationSchema";
